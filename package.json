@@ -1,0 +1,18 @@
+{
+  "name": "takealot-price-watcher",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "check": "tsx src/check.ts",
+    "check:dry": "tsx src/check.ts --dry-run"
+  },
+  "dependencies": {
+    "resend": "^4.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.7.0"
+  }
+}

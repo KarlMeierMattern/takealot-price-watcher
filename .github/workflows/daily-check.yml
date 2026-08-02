@@ -1,0 +1,40 @@
+name: Daily price check
+
+on:
+  schedule:
+    # 06:00 UTC ≈ 08:00 SAST
+    - cron: "0 6 * * *"
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - run: npm ci
+
+      - name: Check price and alert on drop
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          EMAIL_FROM: ${{ secrets.EMAIL_FROM }}
+          EMAIL_TO: ${{ secrets.EMAIL_TO }}
+          TARGET_PRICE: ${{ secrets.TARGET_PRICE }}
+          GEEWIZ_PRODUCT_URL: ${{ secrets.GEEWIZ_PRODUCT_URL }}
+        run: npm run check
+
+      - name: Persist price history
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/price-state.json
+          git diff --staged --quiet || git commit -m "chore: update price state"
+          git push
