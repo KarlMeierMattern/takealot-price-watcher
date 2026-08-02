@@ -6,6 +6,10 @@ on:
     - cron: "0 6 * * *"
   workflow_dispatch:
 
+concurrency:
+  group: price-check
+  cancel-in-progress: false
+
 jobs:
   check:
     runs-on: ubuntu-latest
@@ -22,16 +26,16 @@ jobs:
 
       - run: npm ci
 
-      - name: Check price and alert on drop
+      - name: Check prices and alert on drops
         env:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           EMAIL_FROM: ${{ secrets.EMAIL_FROM }}
           EMAIL_TO: ${{ secrets.EMAIL_TO }}
           TARGET_PRICE: ${{ secrets.TARGET_PRICE }}
-          GEEWIZ_PRODUCT_URL: ${{ secrets.GEEWIZ_PRODUCT_URL }}
+          RETAILERS: takealot,amazon
         run: npm run check
 
-      - name: Persist price history
+      - name: Save price history to repo
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"

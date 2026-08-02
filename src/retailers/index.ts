@@ -11,4 +11,22 @@ export const RETAILER_FETCHERS: Record<RetailerId, RetailerFetcher> = {
   geewiz: fetchGeewizSnapshot,
 };
 
-export const RETAILER_ORDER: RetailerId[] = ["takealot", "amazon", "geewiz"];
+export const DEFAULT_RETAILER_ORDER: RetailerId[] = [
+  "takealot",
+  "amazon",
+  "geewiz",
+];
+
+export function getRetailerOrder(): RetailerId[] {
+  const configured = process.env.RETAILERS?.split(",")
+    .map((entry) => entry.trim())
+    .filter(Boolean);
+
+  if (!configured?.length) {
+    return DEFAULT_RETAILER_ORDER;
+  }
+
+  return configured.filter(
+    (id): id is RetailerId => id in RETAILER_FETCHERS,
+  );
+}

@@ -2,7 +2,7 @@ import { readFileSync } from "node:fs";
 import path from "node:path";
 import { sendPriceDropEmail, sendTargetPriceEmail } from "./email.js";
 import { PRODUCT_NAME } from "./products.js";
-import { RETAILER_FETCHERS, RETAILER_ORDER } from "./retailers/index.js";
+import { getRetailerOrder, RETAILER_FETCHERS } from "./retailers/index.js";
 import {
   detectPriceDrop,
   getRetailerState,
@@ -37,7 +37,7 @@ async function checkRetailer(
   dryRun: boolean,
   targetPrice: number | null,
 ): Promise<AllState> {
-  for (const retailerId of RETAILER_ORDER) {
+  for (const retailerId of getRetailerOrder()) {
     const fetchSnapshot = RETAILER_FETCHERS[retailerId];
 
     console.log(`\n[${retailerId}] Checking ${PRODUCT_NAME}...`);

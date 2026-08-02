@@ -1,73 +1,53 @@
 # Yaber K3 price watcher
 
-Daily price checker for the [Yaber K3 Premier Projector](https://www.takealot.com/yaber-k3-premier-projector-with-jbl-sound/PLID97514813) across three South African retailers:
+Daily price checker for the [Yaber K3 Premier Projector](https://www.takealot.com/yaber-k3-premier-projector-with-jbl-sound/PLID97514813). It runs on **GitHub Actions**, checks Takealot and Amazon South Africa, and emails you via [Resend](https://resend.com) when the price drops.
 
 | Retailer | Link |
 |----------|------|
 | Takealot | [PLID97514813](https://www.takealot.com/yaber-k3-premier-projector-with-jbl-sound/PLID97514813) |
 | Amazon SA | [B0DBLBW268](https://www.amazon.co.za/dp/B0DBLBW268) |
-| Geewiz | Search or direct URL (see below) |
 
-You get a Resend email when the price drops on any of them.
+Geewiz is not included — their site blocks GitHub Actions runners.
 
 ## Setup
 
-```bash
-cd takealot-price-watcher
-npm install
-cp .env.example .env
-# Edit .env with your Resend API key and email addresses
-```
-
-### Resend
+### 1. Resend
 
 1. Create an API key at [resend.com/api-keys](https://resend.com/api-keys).
-2. For testing, use `onboarding@resend.dev` as the sender and your own email as the recipient.
-3. For production, verify a domain at [resend.com/domains](https://resend.com/domains) and use that in `EMAIL_FROM`.
+2. For testing, use `onboarding@resend.dev` as the sender.
+3. For production, verify a domain at [resend.com/domains](https://resend.com/domains).
 
-### Geewiz
+### 2. GitHub secrets
 
-Geewiz blocks many automated requests (including GitHub Actions). It works best when you run the checker from your Mac on a home connection.
+In the repo go to **Settings → Secrets and variables → Actions → New repository secret**:
 
-If the Yaber K3 is not found by search, paste the product page URL into `.env`:
+| Secret | Required | Example |
+|--------|----------|---------|
+| `RESEND_API_KEY` | Yes | `re_...` |
+| `EMAIL_FROM` | Yes | `You <alerts@yourdomain.com>` |
+| `EMAIL_TO` | Yes | `you@gmail.com` |
+| `TARGET_PRICE` | No | `7500` |
 
-```
-GEEWIZ_PRODUCT_URL=https://www.geewiz.co.za/.../yaber-k3....html
-```
+### 3. Enable Actions
 
-## Run manually
+GitHub → **Actions** → enable workflows if prompted.
 
-```bash
-npm run check          # check all retailers, alert on drops, save state
-npm run check:dry      # same but no email and no state write
-```
-
-The first run for each retailer records a baseline price and sends no alert. After that, any price drop triggers an email tagged with the retailer name.
-
-Optional: set `TARGET_PRICE=7500` in `.env` to also get an email when a retailer hits that price or below.
-
-## Daily schedule
-
-### Option A — GitHub Actions (Takealot + Amazon)
-
-Push to GitHub and add secrets: `RESEND_API_KEY`, `EMAIL_FROM`, `EMAIL_TO`, optional `TARGET_PRICE`.
-
-The workflow runs daily at 08:00 SAST. Geewiz may be skipped there because of bot protection — use local cron for full coverage.
-
-### Option B — macOS cron (all three retailers)
-
-```bash
-crontab -e
-```
-
-```
-0 8 * * * cd /Users/alexander/code/projects/takealot-price-watcher && npm run check >> /tmp/takealot-price-watcher.log 2>&1
-```
+The job runs daily at **08:00 SAST** and can also be triggered manually from the Actions tab (**Daily price check → Run workflow**).
 
 ## How it works
 
-- **Takealot** — public product API (price + stock)
-- **Amazon SA** — product page HTML (price when listed; currently often unavailable with no price)
-- **Geewiz** — product page HTML, or search then first Yaber K3 match
+1. The workflow checks Takealot (API) and Amazon SA (product page).
+2. It compares prices against `data/price-state.json` in the repo.
+3. On a drop, it sends a Resend email tagged with the retailer name.
+4. It commits the updated price history back to the repo.
 
-State is stored per retailer in `data/price-state.json`.
+The first run for each retailer records a baseline and sends no alert.
+
+## Local testing (optional)
+
+```bash
+npm install
+cp .env.example .env   # fill in values
+npm run check:dry      # no email, no state write
+npm run check          # sends email and updates data/price-state.json
+```
