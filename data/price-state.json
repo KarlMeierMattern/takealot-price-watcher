@@ -2,7 +2,7 @@
   "takealot": {
     "lastPrice": 8199,
     "lastPrettyPrice": "R 8,199",
-    "lastCheckedAt": "2026-09-03T11:04:07.404Z",
+    "lastCheckedAt": "2026-09-04T11:08:14.333Z",
     "lowestSeen": 8199,
     "history": [
       {
@@ -220,13 +220,19 @@
         "prettyPrice": "R 8,199",
         "checkedAt": "2026-09-03T11:04:07.404Z",
         "inStock": true
+      },
+      {
+        "price": 8199,
+        "prettyPrice": "R 8,199",
+        "checkedAt": "2026-09-04T11:08:14.333Z",
+        "inStock": true
       }
     ]
   },
   "amazon": {
     "lastPrice": null,
     "lastPrettyPrice": "No price listed",
-    "lastCheckedAt": "2026-09-03T11:04:08.952Z",
+    "lastCheckedAt": "2026-09-04T11:08:14.889Z",
     "lowestSeen": null,
     "history": [
       {
@@ -431,6 +437,12 @@
         "price": null,
         "prettyPrice": "No price listed",
         "checkedAt": "2026-09-03T11:04:08.952Z",
+        "inStock": false
+      },
+      {
+        "price": null,
+        "prettyPrice": "No price listed",
+        "checkedAt": "2026-09-04T11:08:14.889Z",
         "inStock": false
       }
     ]
