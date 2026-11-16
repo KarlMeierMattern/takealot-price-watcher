@@ -1,16 +1,10 @@
 {
   "takealot": {
-    "lastPrice": 7499,
-    "lastPrettyPrice": "R 7,499",
-    "lastCheckedAt": "2026-11-15T13:48:59.136Z",
+    "lastPrice": 7799,
+    "lastPrettyPrice": "R 7,799",
+    "lastCheckedAt": "2026-11-16T15:31:29.522Z",
     "lowestSeen": 7499,
     "history": [
-      {
-        "price": 8999,
-        "prettyPrice": "R 8,999",
-        "checkedAt": "2026-08-18T06:56:32.908Z",
-        "inStock": false
-      },
       {
         "price": 8999,
         "prettyPrice": "R 8,999",
@@ -544,21 +538,21 @@
         "prettyPrice": "R 7,499",
         "checkedAt": "2026-11-15T13:48:59.136Z",
         "inStock": true
+      },
+      {
+        "price": 7799,
+        "prettyPrice": "R 7,799",
+        "checkedAt": "2026-11-16T15:31:29.522Z",
+        "inStock": true
       }
     ]
   },
   "amazon": {
     "lastPrice": null,
     "lastPrettyPrice": "No price listed",
-    "lastCheckedAt": "2026-11-15T13:48:59.814Z",
+    "lastCheckedAt": "2026-11-16T15:31:30.601Z",
     "lowestSeen": null,
     "history": [
-      {
-        "price": null,
-        "prettyPrice": "No price listed",
-        "checkedAt": "2026-08-18T06:56:33.422Z",
-        "inStock": false
-      },
       {
         "price": null,
         "prettyPrice": "No price listed",
@@ -1091,6 +1085,12 @@
         "price": null,
         "prettyPrice": "No price listed",
         "checkedAt": "2026-11-15T13:48:59.814Z",
+        "inStock": false
+      },
+      {
+        "price": null,
+        "prettyPrice": "No price listed",
+        "checkedAt": "2026-11-16T15:31:30.601Z",
         "inStock": false
       }
     ]
